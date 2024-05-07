@@ -6,14 +6,8 @@
 // Make a fetch request to the foursquare api [x]
 // use the place searcch method [x]
 // specify latitude, longitude, categories, and sort [x]
-// Programmatically render a list of results
-// Map the locations on the map
-
-// const express = require('express');
-// require('dotenv').config();
-
-// console.log(process.env)
-// console.log('hellooo')
+// Programmatically render a list of results [x]
+// Map the locations on the map [x]
 
 let selectEl = document.querySelector('select')
 let listEl = document.querySelector('ul')
@@ -34,7 +28,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 L.Control.geocoder().addTo(map);
 
-navigator.geolocation.getCurrentPosition((position) => { 
+navigator.geolocation.getCurrentPosition((position) => {
     let { coords: { latitude, longitude } } = position
     console.log('Successfully obtained location!', [latitude, longitude])
     // store my location within a variable to use outside of this scope
@@ -47,7 +41,6 @@ navigator.geolocation.getCurrentPosition((position) => {
 }, (error) => {
     console.log(error)
 })
-
 
 // find latitude & longitude of any location that is clicked
 function onMapClick(e) {
@@ -85,9 +78,6 @@ document.querySelector('button').addEventListener('click', (event) => {
             // we are destructuring the parsed json response object
             // results = [(name, location, distance), ...]
 
-            // Create markers for each business
-            // Iterate over each business result
-
             // Remove existing markers
             map.eachLayer(layer => {
                 if (layer instanceof L.Marker) {
@@ -96,6 +86,8 @@ document.querySelector('button').addEventListener('click', (event) => {
                 }
             });
 
+            // Create markers for each business
+            // Iterate over each business result
             // Programmatically render a list of results
             // Map the locations on the map
             // Create list elements and append to ul
