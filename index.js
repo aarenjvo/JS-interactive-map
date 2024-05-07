@@ -32,11 +32,11 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+L.Control.geocoder().addTo(map);
 
-navigator.geolocation.getCurrentPosition((position) => {
-    // position = (coords = (latitude, longitude, accuracy))
+navigator.geolocation.getCurrentPosition((position) => { 
     let { coords: { latitude, longitude } } = position
-    console.log('It works!', [latitude, longitude])
+    console.log('Successfully obtained location!', [latitude, longitude])
     // store my location within a variable to use outside of this scope
     currentPosition = { latitude, longitude }
     map.setView([latitude, longitude])
@@ -68,8 +68,6 @@ document.querySelector('button').addEventListener('click', (event) => {
 
     const latitude = currentPosition.latitude
     const longitude = currentPosition.longitude
-    console.log(latitude)
-    console.log(longitude)
 
     const options = {
         method: 'GET',
@@ -94,7 +92,7 @@ document.querySelector('button').addEventListener('click', (event) => {
             map.eachLayer(layer => {
                 if (layer instanceof L.Marker) {
                     map.removeLayer(layer);
-                    console.log('layer removed!')
+                    console.log('Current position layer removed!')
                 }
             });
 
@@ -111,11 +109,14 @@ document.querySelector('button').addEventListener('click', (event) => {
                 listEl.append(listItem)
                 const lat = results[i].geocodes.main.latitude
                 const lng = results[i].geocodes.main.longitude
-                console.log(lat, lng)
+                const name = results[i].name
+                const BizAddress = results[i].location.address
+                console.log(lat, lng, name, BizAddress)
                 const location = { lat, lng }
                 locationsArray.push(location)
                 console.log(location)
-                L.marker([lat, lng]).addTo(map)
+                marker = L.marker([lat, lng]).addTo(map)
+                marker.bindPopup(name).openPopup()
                 L.polygon([locationsArray]).addTo(map)
             }
 
